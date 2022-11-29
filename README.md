@@ -1,90 +1,141 @@
-# Next + Netlify Starter
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/46648482-644c-4c80-bafb-872057e51b6b/deploy-status)](https://app.netlify.com/sites/next-dev-starter/deploys)
 
-This is a [Next.js](https://nextjs.org/) v12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and set up to be instantly deployed to [Netlify](https://url.netlify.com/SyTBPVamO)!
+#  DND Character Creator
 
-This project is a very minimal starter that includes 2 sample components, a global stylesheet, a `netlify.toml` for deployment, and a `jsconfig.json` for setting up absolute imports and aliases. With Netlify, you'll have access to features like Preview Mode, server-side rendering/incremental static regeneration via Netlify Functions, and internationalized routing on deploy automatically.
+## Overview
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/next-netlify-starter&utm_source=github&utm_medium=nextstarter-cs&utm_campaign=devex-cs)
+Tabletop fantasy gamers can easily lose track of their characters' names, classes, stats, skills, personalities, and background stories as their journey progresses. Now worry no more with the DND Character Creator!
 
-(If you click this button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify)
+DND Character Creator is a web app that will allow users to keep track of multiple character sheets. Users can register and login. Once they're logged in, they can create or view their character sheets. For every sheet that they have, they can edit their character's names, classes, stats, skills, personalities, and background stories. The app will also calculate bonuses from items and embed them to stats. 
 
-## Table of Contents:
+## Data Model
 
-- [Getting Started](#getting-started)
-- [Installation options](#installation-options)
-- [Testing](#testing)
-  - [Included Default Testing](#included-default-testing)
-  - [Removing Renovate](#removing-renovate)
-  - [Removing Cypress](#removing-cypress)
+The application will store Users, Lists and Items
 
-## Getting Started
+* users can have multiple characters (via references)
+* each character can have multiple stats, skills, personalities (by embedding)
 
-First, run the development server:
+An Example User:
 
-```bash
-npm run dev
-# or
-yarn dev
+```javascript
+{
+  username: "WizardsOftheCoast",
+  hash: // a password hash, 
+  lists: // an array of references to List documents
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+An Example Character with Embedded Items:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-### Installation options
-
-**Option one:** One-click deploy
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/next-netlify-starter&utm_source=github&utm_medium=nextstarter-cs&utm_campaign=devex-cs)
-
-**Option two:** Manual clone
-
-1. Clone this repo: `git clone https://github.com/netlify-templates/next-netlify-starter.git`
-2. Navigate to the directory and run `npm install`
-3. Run `npm run dev`
-4. Make your changes
-5. Connect to [Netlify](https://url.netlify.com/Bk4UicocL) manually (the `netlify.toml` file is the one you'll need to make sure stays intact to make sure the export is done and pointed to the right stuff)
-
-## Testing
-
-### Included Default Testing
-
-We’ve included some tooling that helps us maintain these templates. This template currently uses:
-
-- [Renovate](https://www.mend.io/free-developer-tools/renovate/) - to regularly update our dependencies
-- [Cypress](https://www.cypress.io/) - to run tests against how the template runs in the browser
-- [Cypress Netlify Build Plugin](https://github.com/cypress-io/netlify-plugin-cypress) - to run our tests during our build process
-
-If your team is not interested in this tooling, you can remove them with ease!
-
-### Removing Renovate
-
-In order to keep our project up-to-date with dependencies we use a tool called [Renovate](https://github.com/marketplace/renovate). If you’re not interested in this tooling, delete the `renovate.json` file and commit that onto your main branch.
-
-### Removing Cypress
-
-For our testing, we use [Cypress](https://www.cypress.io/) for end-to-end testing. This makes sure that we can validate that our templates are rendering and displaying as we’d expect. By default, we have Cypress not generate deploy links if our tests don’t pass. If you’d like to keep Cypress and still generate the deploy links, go into your `netlify.toml` and delete the plugin configuration lines:
-
-```diff
-[[plugins]]
-  package = "netlify-plugin-cypress"
--  [plugins.inputs.postBuild]
--    enable = true
--
--  [plugins.inputs]
--    enable = false 
+```javascript
+{
+  user: // a reference to a User object
+  name: "Mordenkainen",
+  class: "Mage",
+  stats: [
+    { name: "STRENGTH", base: 11, bonus: 0},
+    { name: "DEXTERITY", base: 13, bonus: 0},
+    { name: "CONSTITUTION", base: 14, bonus: 0},
+    { name: "INTELLIGENCE", base: 16, bonus: 12},
+    { name: "WISDOM", base: 14, bonus: 0},
+    { name: "CHARISMA", base: 12, bonus: 0},
+  ]
+  items: [
+    { name: "Wand Of Archmage", bonusname: "INTELLIGENCE", bonusno: 12},
+  ],
+  personalities: [
+    {traits: "alcoholic"},
+    {ideals: "get married after this journey"},
+    {bonds: "friend of Bigby"},
+    {flaws: "darkness"}
+    ],
+  stories: "To be filled.",
+  createdAt: //time created.
+}
 ```
 
-If you’d like to remove the `netlify-plugin-cypress` build plugin entirely, you’d need to delete the entire block above instead. And then make sure sure to remove the package from the dependencies using:
 
-```bash
-npm uninstall -D netlify-plugin-cypress
-```
+## [Link to Commented First Draft Schema](db.mjs) 
 
-And lastly if you’d like to remove Cypress entirely, delete the entire `cypress` folder and the `cypress.config.ts` file. Then remove the dependency using:
+## Wireframes
 
-```bash
-npm uninstall -S cypress
-```
+/login - page for login
+
+![login](/public/documentation/login.jpg)
+
+/newuser - page for creating new account
+
+![new](/public/documentation/new.jpg)
+
+/char - page for showing all characters
+
+![chars](/public/documentation/chars.jpg)
+
+/char/create - page for creating a new character
+
+![char create](/public/documentation/charcreate.jpg)
+
+/char/create/item - page for creating a new item
+
+![char create item](/public/documentation/additem.jpg)
+
+/char/slug - page for showing specific character
+
+![char](/public/documentation/slug.jpg)
+
+/char/slug/edit - page for edit a character
+
+![char edit](/public/documentation/edit.jpg)
+
+/char/slug/remove - page for removing an item
+
+![char edit](/public/documentation/remove.jpg)
+
+## Site map
+
+![site](/public/documentation/site.jpg)
+
+## User Stories or Use Cases
+
+1. as non-registered user, I can register a new account with the site
+2. as a user, I can log in to the site
+3. as a user, I can create a character
+4. as a user, I can view all of the characters I've created in a single list
+5. as a user, I can add/remove items to an existing character
+6. as a user, I can edit stats of an existing character
+7. as a user, I can edit personalities of an existing character
+8. as a user, I can edit stories of an existing character
+
+## Research Topics
+
+* (5 points) Integrate user authentication
+    * What is it?
+        * A way to verify users from an existing repository of users and passwords.
+    * Why?
+        * So that users do not mix their characters together. Each user should access its database only.
+    * List of Possible Solutions?
+        * Okta, PassportJS, Auth0, Permit, etc.
+    * Points?
+        * 5 points. Never tried this stuff before.
+* (3 points) Unit Testings
+    * What is it?
+        * A way to verify whether or not my code will work as I picture it would.
+    * Why?
+        * So that bugs are found and fixed easily and higher code quality is ensured.
+    * List of Possible Solutions?
+        * Jest, Mocha, Jasmine, Cypress, etc.
+    * Points?
+        * 3 points. Considering the fact that we have used Mocha in previous HWs.
+
+8 points total out of 8 required points.
+
+
+## [Link to Initial Main Project File](app.mjs) 
+## Annotations / References Used
+
+
+1. [jest unit testing docs](https://www.softwaretestinghelp.com/jest-testing-tutorial/)
+
+
+## Additional Note for Milestone 3
+I have a Mid-term coming up tomorrow. Will be updating the files on Wed.
