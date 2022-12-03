@@ -19,7 +19,7 @@ export default function Home() {
         The app will also calculate bonuses from items and embed them to stats. 
         </p>
       </main>
-
+      <Footer></Footer>
     </div>
   )
 }
